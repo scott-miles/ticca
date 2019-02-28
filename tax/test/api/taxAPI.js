@@ -7,11 +7,25 @@ let server = require('../../server.js');
 chai.use(chaiHttp);
 
 function getTaxForIncome(income, assert) {
-  chai.request(server)
-      .get('/api/tax?taxableIncome=' + income)
-      .end(function(error, response) {
-        assert(response);
-      });
+  getTaxForIncomeWithHeader(income, {token: "test"}, assert);
+}
+
+function getTaxWithoutTokenHeader(income, assert) {
+    getTaxForIncomeWithHeader(income, {}, assert);
+}
+
+function getTaxForIncomeWithHeader(income, headers, assert) {
+  let request = chai.request(server)
+    .get('/api/tax?taxableIncome=' + income)
+
+  Object.keys(headers).forEach(function(key){
+    request.set(key, headers[key]);
+  });
+
+  request.end(function(error, response) {
+    assert(response);
+  });
 }
 
 module.exports.getTaxForIncome = getTaxForIncome;
+module.exports.getTaxWithoutTokenHeader = getTaxWithoutTokenHeader;

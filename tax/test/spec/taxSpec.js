@@ -1,6 +1,13 @@
 let mocha = require('mocha');
+let nock = require('nock');
 
 let taxAPI = require('../api/taxAPI.js')
+
+beforeEach(function() {
+  nock('http://localhost:3002')
+    .get('/api/session')
+    .reply(200, { authenticated: 'true' });
+});
 
 describe('Calculate tax for an employee', function() {
 
@@ -29,6 +36,16 @@ describe('Calculate tax for an employee', function() {
       taxAPI.getTaxForIncome(100000, function(response) {
         response.body.should.have.property('incomeTax', 24947);
         response.should.have.status(200);
+        done();
+      });
+    });
+  });
+
+  context('without a session token', function(){
+    it('reponse should return an error', function(done){
+      taxAPI.getTaxWithoutTokenHeader(100000, function(response) {
+        response.body.should.have.property('error', 'No token');
+        response.should.have.status(406);
         done();
       });
     });

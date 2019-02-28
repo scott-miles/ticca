@@ -13,6 +13,5 @@
     "body-parser": "^1.18.3",
     "request": "^2.88.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
