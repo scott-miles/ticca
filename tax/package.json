@@ -4,7 +4,8 @@
   "description": "Tax Service",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha"
   },
   "author": "MYOB",
   "license": "MIT",
@@ -14,5 +15,8 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
+    "chai": "4.1.1",
+    "chai-http": "2.0.1",
+    "mocha": "2.4.5"
   }
 }
